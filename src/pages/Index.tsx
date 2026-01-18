@@ -1,6 +1,8 @@
 import { useState } from "react";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import { CodeBlock } from "@/components/CodeBlock";
-import { extensionFiles, installationInstructions } from "@/data/extensionFiles";
+import { extensionFiles } from "@/data/extensionFiles";
 import { 
   Hand, 
   Download, 
@@ -12,13 +14,16 @@ import {
   ChevronDown,
   ChevronUp,
   Copy,
-  Check
+  Check,
+  Package,
+  Loader2
 } from "lucide-react";
 
 const Index = () => {
   const [activeFile, setActiveFile] = useState<string>("manifest.json");
   const [showInstructions, setShowInstructions] = useState(false);
   const [allCopied, setAllCopied] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const fileList = Object.keys(extensionFiles);
 
@@ -29,6 +34,67 @@ const Index = () => {
     await navigator.clipboard.writeText(allCode);
     setAllCopied(true);
     setTimeout(() => setAllCopied(false), 2000);
+  };
+
+  const handleDownloadZip = async () => {
+    setIsDownloading(true);
+    try {
+      const zip = new JSZip();
+      
+      // Add all extension files to the ZIP
+      Object.entries(extensionFiles).forEach(([filename, content]) => {
+        zip.file(filename, content);
+      });
+      
+      // Create icons folder with placeholder SVG icons
+      const iconSvg16 = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>`;
+      const iconSvg48 = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>`;
+      const iconSvg128 = `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>`;
+      
+      zip.folder("icons")?.file("icon16.svg", iconSvg16);
+      zip.folder("icons")?.file("icon48.svg", iconSvg48);
+      zip.folder("icons")?.file("icon128.svg", iconSvg128);
+      
+      // Add a README
+      const readme = `# Agent-Zero Gesture Control Extension
+
+## Installation
+
+1. Open Chrome and go to chrome://extensions/
+2. Enable "Developer mode" (top-right toggle)
+3. Click "Load unpacked"
+4. Select this folder
+
+## Usage
+
+1. Navigate to http://72.60.104.92:50080/
+2. Click the extension icon
+3. Toggle "Enable Gesture Control"
+4. Allow camera access
+
+## Gestures
+
+- ✋ Open Palm → "Pause current task"
+- ✊ Fist → "Stop immediately"
+- ✌️ Two Fingers → "Execute the next task"
+- 👍 Thumbs Up → "Confirm and proceed"
+
+## Notes
+
+- Confidence threshold: 85%
+- Cooldown between commands: 2 seconds
+- Only works on Agent-Zero (72.60.104.92:50080)
+`;
+      zip.file("README.md", readme);
+      
+      // Generate and download
+      const blob = await zip.generateAsync({ type: "blob" });
+      saveAs(blob, "agent-zero-gesture-extension.zip");
+    } catch (error) {
+      console.error("Failed to create ZIP:", error);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const gestures = [
@@ -102,19 +168,34 @@ const Index = () => {
             <FileCode className="w-6 h-6" />
             Extension Files
           </h2>
-          <button onClick={handleCopyAll} className="copy-all-button">
-            {allCopied ? (
-              <>
-                <Check className="w-4 h-4" />
-                All Copied!
+          <div className="code-actions">
+            <button onClick={handleDownloadZip} className="download-zip-button" disabled={isDownloading}>
+              {isDownloading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Creating ZIP...
+                </>
+              ) : (
+                <>
+                  <Package className="w-4 h-4" />
+                  Download ZIP
+                </>
+              )}
+            </button>
+            <button onClick={handleCopyAll} className="copy-all-button">
+              {allCopied ? (
+                <>
+                  <Check className="w-4 h-4" />
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" />
+                  Copy All
               </>
-            ) : (
-              <>
-                <Copy className="w-4 h-4" />
-                Copy All Files
-              </>
-            )}
-          </button>
+              )}
+            </button>
+          </div>
         </div>
 
         <div className="code-container">

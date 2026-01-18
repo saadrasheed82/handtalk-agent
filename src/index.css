@@ -201,14 +201,36 @@
     @apply flex flex-col sm:flex-row items-center justify-between gap-4 max-w-5xl mx-auto mb-6;
   }
 
-  .copy-all-button {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all;
+  .code-actions {
+    @apply flex items-center gap-3;
+  }
+
+  .download-zip-button {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition-all;
     background: var(--gradient-primary);
     color: hsl(222 47% 6%);
   }
 
-  .copy-all-button:hover {
+  .download-zip-button:hover:not(:disabled) {
     box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
+  }
+
+  .download-zip-button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+
+  .copy-all-button {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all;
+    background: hsl(222 30% 15%);
+    color: hsl(210 40% 80%);
+    border: 1px solid hsl(222 30% 20%);
+  }
+
+  .copy-all-button:hover {
+    background: hsl(222 30% 20%);
+    border-color: hsl(160 84% 39% / 0.5);
   }
 
   .code-container {

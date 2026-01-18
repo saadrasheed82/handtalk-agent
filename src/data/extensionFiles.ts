@@ -7,12 +7,7 @@ export const extensionFiles = {
   "permissions": ["activeTab", "scripting"],
   "host_permissions": ["http://72.60.104.92:50080/*"],
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {

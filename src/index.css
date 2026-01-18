@@ -2,95 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Agent-Zero Gesture Control - Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 96%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 96%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 160 84% 39%;
+    --primary-foreground: 222 47% 6%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 222 30% 14%;
+    --secondary-foreground: 210 40% 96%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 222 30% 18%;
+    --muted-foreground: 215 20% 55%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 160 60% 45%;
+    --accent-foreground: 222 47% 6%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
+    --ring: 160 84% 39%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Custom tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(160 84% 39%), hsl(160 72% 28%));
+    --gradient-hero: linear-gradient(180deg, hsl(222 47% 8%) 0%, hsl(222 47% 4%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(222 30% 12%) 0%, hsl(222 30% 8%) 100%);
+    --shadow-glow: 0 0 40px hsl(160 84% 39% / 0.15);
+    --shadow-card: 0 4px 24px hsl(222 47% 2% / 0.5);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
   }
 }
 
@@ -100,6 +56,280 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  }
+
+  code {
+    @apply bg-secondary px-1.5 py-0.5 rounded text-sm font-mono text-primary;
+  }
+}
+
+@layer components {
+  /* Hero Section */
+  .hero-section {
+    @apply relative py-20 px-6 text-center overflow-hidden;
+    background: var(--gradient-hero);
+  }
+
+  .hero-section::before {
+    content: '';
+    @apply absolute inset-0 opacity-30;
+    background: radial-gradient(circle at 50% 0%, hsl(160 84% 39% / 0.2) 0%, transparent 60%);
+  }
+
+  .hero-content {
+    @apply relative z-10 max-w-3xl mx-auto;
+  }
+
+  .hero-icon {
+    @apply inline-flex items-center justify-center w-24 h-24 rounded-2xl mb-6;
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-glow);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .hero-icon svg {
+    @apply text-background;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .hero-title {
+    @apply text-4xl md:text-5xl font-bold mb-4 tracking-tight;
+  }
+
+  .hero-highlight {
+    @apply text-primary;
+  }
+
+  .hero-subtitle {
+    @apply text-lg text-muted-foreground max-w-xl mx-auto mb-6;
+  }
+
+  .hero-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium;
+    background: hsl(160 84% 39% / 0.1);
+    border: 1px solid hsl(160 84% 39% / 0.3);
+    color: hsl(160 84% 50%);
+  }
+
+  .badge-dot {
+    @apply w-2 h-2 rounded-full bg-primary;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Features */
+  .features-section {
+    @apply py-12 px-6;
+  }
+
+  .features-grid {
+    @apply grid md:grid-cols-3 gap-6 max-w-4xl mx-auto;
+  }
+
+  .feature-card {
+    @apply p-6 rounded-xl text-center;
+    background: var(--gradient-card);
+    border: 1px solid hsl(222 30% 20%);
+  }
+
+  .feature-icon {
+    @apply w-10 h-10 mx-auto mb-4 text-primary;
+  }
+
+  .feature-card h3 {
+    @apply font-semibold mb-2;
+  }
+
+  .feature-card p {
+    @apply text-sm text-muted-foreground;
+  }
+
+  /* Gestures */
+  .gestures-section {
+    @apply py-12 px-6;
+    background: hsl(222 47% 5%);
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-center mb-8 flex items-center justify-center gap-3;
+  }
+
+  .gestures-grid {
+    @apply grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto;
+  }
+
+  .gesture-card {
+    @apply flex items-center gap-4 p-4 rounded-xl;
+    background: var(--gradient-card);
+    border: 1px solid hsl(222 30% 18%);
+    transition: all 0.2s ease;
+  }
+
+  .gesture-card:hover {
+    border-color: hsl(160 84% 39% / 0.5);
+    box-shadow: 0 0 20px hsl(160 84% 39% / 0.1);
+  }
+
+  .gesture-emoji {
+    @apply text-3xl;
+  }
+
+  .gesture-info h4 {
+    @apply font-semibold text-sm;
+  }
+
+  .gesture-info p {
+    @apply text-xs text-muted-foreground;
+  }
+
+  /* Code Section */
+  .code-section {
+    @apply py-12 px-6;
+  }
+
+  .code-header-main {
+    @apply flex flex-col sm:flex-row items-center justify-between gap-4 max-w-5xl mx-auto mb-6;
+  }
+
+  .copy-all-button {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all;
+    background: var(--gradient-primary);
+    color: hsl(222 47% 6%);
+  }
+
+  .copy-all-button:hover {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .code-container {
+    @apply max-w-5xl mx-auto rounded-xl overflow-hidden;
+    background: hsl(222 47% 4%);
+    border: 1px solid hsl(222 30% 15%);
+  }
+
+  .file-tabs {
+    @apply flex overflow-x-auto p-2 gap-1;
+    background: hsl(222 47% 6%);
+    border-bottom: 1px solid hsl(222 30% 15%);
+  }
+
+  .file-tab {
+    @apply px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all;
+    color: hsl(215 20% 55%);
+  }
+
+  .file-tab:hover {
+    background: hsl(222 30% 12%);
+  }
+
+  .file-tab.active {
+    background: var(--gradient-primary);
+    color: hsl(222 47% 6%);
+  }
+
+  .code-display {
+    @apply p-4;
+  }
+
+  /* Code Block Component */
+  .code-block {
+    @apply rounded-lg overflow-hidden;
+    background: hsl(222 47% 6%);
+    border: 1px solid hsl(222 30% 18%);
+  }
+
+  .code-header {
+    @apply flex items-center justify-between px-4 py-3;
+    background: hsl(222 30% 10%);
+    border-bottom: 1px solid hsl(222 30% 18%);
+  }
+
+  .code-filename {
+    @apply flex items-center gap-2 text-sm font-medium text-muted-foreground;
+  }
+
+  .copy-button {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all;
+    background: hsl(222 30% 15%);
+    color: hsl(210 40% 80%);
+  }
+
+  .copy-button:hover {
+    background: hsl(160 84% 39%);
+    color: hsl(222 47% 6%);
+  }
+
+  .code-content {
+    @apply p-4 overflow-x-auto text-sm leading-relaxed;
+    max-height: 500px;
+    color: hsl(210 40% 80%);
+  }
+
+  .code-content code {
+    @apply bg-transparent p-0 text-inherit font-mono;
+    white-space: pre;
+  }
+
+  /* Installation */
+  .install-section {
+    @apply py-12 px-6 max-w-4xl mx-auto;
+  }
+
+  .install-toggle {
+    @apply w-full flex items-center justify-between p-4 rounded-xl font-medium transition-all;
+    background: var(--gradient-card);
+    border: 1px solid hsl(222 30% 18%);
+  }
+
+  .install-toggle:hover {
+    border-color: hsl(160 84% 39% / 0.5);
+  }
+
+  .install-toggle-content {
+    @apply flex items-center gap-3;
+  }
+
+  .install-content {
+    @apply mt-4 p-6 rounded-xl;
+    background: hsl(222 47% 5%);
+    border: 1px solid hsl(222 30% 15%);
+  }
+
+  .install-steps {
+    @apply space-y-6;
+  }
+
+  .install-step {
+    @apply flex gap-4;
+  }
+
+  .step-number {
+    @apply flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold;
+    background: var(--gradient-primary);
+    color: hsl(222 47% 6%);
+  }
+
+  .step-content h4 {
+    @apply font-semibold mb-1;
+  }
+
+  .step-content p {
+    @apply text-sm text-muted-foreground leading-relaxed;
+  }
+
+  /* Footer */
+  .footer {
+    @apply py-8 text-center text-sm text-muted-foreground border-t;
+    border-color: hsl(222 30% 12%);
   }
 }
